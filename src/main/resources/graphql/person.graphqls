@@ -1,0 +1,30 @@
+
+type Person {
+  firstName: String,
+  lastName: String,
+  mailAdresses: String,
+  birthDate: String,
+  profile: Profile,
+  skillVOList: [Skill]
+}
+type Skill {
+  libelle: String,
+  description: String,
+  typeSkills: TypeSkills
+}
+type TypeSkills {
+  titleSkill: String
+}
+type Profile {
+  profileTitle: String,
+  profileDescription: String,
+  countPerson: Int
+}
+type Query {
+listPerson:[Person],
+personByEmail(email: String): Person
+}
+
+type Mutation {
+createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person
+}
