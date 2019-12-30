@@ -19,8 +19,7 @@ public interface PersonProxy {
     List<PersonDTO> findAllPerson();
 
     @Caching(evict = {
-            @CacheEvict("person"),
-            @CacheEvict(value="directory", key="#email") })
+            @CacheEvict(key="#email") })
     @RequestMapping(value="/person", method= RequestMethod.GET)
     PersonDTO findPersonByEmail(@RequestParam(value="email", defaultValue="robot@sqli.com") String email);
 }

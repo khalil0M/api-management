@@ -56,6 +56,7 @@ public class PersonQuery implements GraphQLQueryResolver {
                             .build();
     }
 
+    @NotNull
     private ProfileVO getBuildProfile(ProfileDTO profile) {
         return new ProfileVO.Builder()
                 .setProfileTitle(profile.getProfileTitle())
