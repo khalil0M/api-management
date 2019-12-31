@@ -1,6 +1,6 @@
 FROM openjdk:11.0.5-jre-slim
 
-EXPOSE 8762
+EXPOSE 9000
 
 ADD /target/api-management-0.0.1-SNAPSHOT.jar api-management-0.0.1-SNAPSHOT.jar
 
