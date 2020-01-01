@@ -12,17 +12,19 @@ public class PersonVO {
     private String birthDate;
     private ProfileVO profile;
     private List<SkillVO> skillVOList;
+    private List<InterviewVO> interviews;
 
     public PersonVO() {
     }
 
-    public PersonVO(String firstName, String lastName, String mailAdresses, String birthDate, ProfileVO profile, List<SkillVO> skillVOList) {
+    public PersonVO(String firstName, String lastName, String mailAdresses, String birthDate, ProfileVO profile, List<SkillVO> skillVOList,List<InterviewVO> interviews) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mailAdresses = mailAdresses;
         this.birthDate = birthDate;
         this.profile = profile;
         this.skillVOList = skillVOList;
+        this.interviews = interviews;
     }
 
     public String getFirstName() {
@@ -50,6 +52,10 @@ public class PersonVO {
         return skillVOList;
     }
 
+    public List<InterviewVO> getInterviews() {
+        return interviews;
+    }
+
     public static class Builder {
         private String firstName;
         private String lastName;
@@ -57,6 +63,7 @@ public class PersonVO {
         private String birthDate;
         private ProfileVO profile;
         private List<SkillVO> skillVOList;
+        private List<InterviewVO> interviews;
 
         public Builder() {
         }
@@ -91,8 +98,13 @@ public class PersonVO {
             return this;
         }
 
+        public Builder setInterviews(List<InterviewVO> interviews) {
+            this.interviews = interviews;
+            return this;
+        }
+
         public PersonVO build() {
-            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList);
+            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList,interviews);
         }
     }
 }

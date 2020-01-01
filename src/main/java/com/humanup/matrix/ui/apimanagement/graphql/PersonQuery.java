@@ -4,14 +4,13 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.humanup.matrix.ui.apimanagement.dto.InterviewDTO;
 import com.humanup.matrix.ui.apimanagement.dto.ProfileDTO;
+import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
 import com.humanup.matrix.ui.apimanagement.proxy.PersonProxy;
 import com.humanup.matrix.ui.apimanagement.dto.PersonDTO;
 import com.humanup.matrix.ui.apimanagement.proxy.ProfileProxy;
-import com.humanup.matrix.ui.apimanagement.vo.PersonVO;
-import com.humanup.matrix.ui.apimanagement.vo.ProfileVO;
-import com.humanup.matrix.ui.apimanagement.vo.SkillVO;
-import com.humanup.matrix.ui.apimanagement.vo.TypeSkillsVO;
+import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +27,8 @@ public class PersonQuery implements GraphQLQueryResolver {
     @Autowired
     ProfileProxy profileProxy;
 
+    @Autowired
+    CollaboratorManagementProxy collaboratorManagementProxy;
 
     public List<PersonVO> getListPerson() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -47,16 +48,23 @@ public class PersonQuery implements GraphQLQueryResolver {
                     .setMailAdresses(p.getMailAdresses())
                     .setProfile(getBuildProfile(profile))
                     .setSkills(getCollectSkills(p))
+                    .setInterviews(getCollectInterview(p.getMailAdresses()))
                    .build();
                 }).collect(Collectors.toList());
     }
 
 
 
-    public PersonVO getPersonByEmail(String email) throws JsonProcessingException {
+    public PersonVO getPersonByEmail(String email) {
 
-        PersonDTO personDTO=  mapper.readValue(personProxy.findPersonByEmail(email),PersonDTO.class);
-        ProfileDTO profile = mapper.readValue(profileProxy.findProfileByTitle(personDTO.getProfile()),ProfileDTO.class);
+        PersonDTO personDTO= null;
+        ProfileDTO profile = null;
+        try {
+            personDTO = mapper.readValue(personProxy.findPersonByEmail(email), PersonDTO.class);
+             profile = mapper.readValue(profileProxy.findProfileByTitle(personDTO.getProfile()),ProfileDTO.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return new PersonVO.Builder()
                             .setBirthDate(personDTO.getFirstName())
                             .setFirstName(personDTO.getFirstName())
@@ -75,6 +83,26 @@ public class PersonQuery implements GraphQLQueryResolver {
                 .setCountPerson(profile.getCountPerson())
                 .build();
     }
+    @NotNull
+    private List<InterviewVO> getCollectInterview(String email) {
+        List<InterviewDTO> interviewListDTO= null;
+        try {
+            interviewListDTO = mapper.readValue(collaboratorManagementProxy.findInteviewsByCollaboratuerEmail(email),new TypeReference<List<InterviewDTO>>(){});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return interviewListDTO.stream()
+                .map(interview -> {
+                    return new InterviewVO.Builder()
+                            .setInterviewTitle(interview.getInterviewTitle())
+                            .setInterviewDescription(interview.getInterviewDescription())
+                            .setInterviewDate(interview.getInterviewDate())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
     @NotNull
     private List<SkillVO> getCollectSkills(PersonDTO p) {
         return p.getSkillVOList().stream()
