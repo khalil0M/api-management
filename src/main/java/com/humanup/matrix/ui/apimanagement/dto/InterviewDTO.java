@@ -6,13 +6,13 @@ public class InterviewDTO {
 
     private String interviewTitle;
     private String interviewDescription;
-    private Date interviewDate;
+    private String interviewDate;
     private String collaborator;
 
     public InterviewDTO() {
     }
 
-    public InterviewDTO(String interviewTitle, String interviewDescription, Date interviewDate, String collaborator) {
+    public InterviewDTO(String interviewTitle, String interviewDescription, String interviewDate, String collaborator) {
         this.interviewTitle = interviewTitle;
         this.interviewDescription = interviewDescription;
         this.interviewDate = interviewDate;
@@ -25,7 +25,7 @@ public class InterviewDTO {
     public String getInterviewDescription() {
         return interviewDescription;
     }
-    public Date getInterviewDate() {
+    public String getInterviewDate() {
         return interviewDate;
     }
     public String getCollaborator() {
@@ -35,7 +35,7 @@ public class InterviewDTO {
     public static class Builder {
         private String interviewTitle;
         private String interviewDescription;
-        private Date interviewDate;
+        private String interviewDate;
         private String collaborator;
 
         public Builder() {
@@ -49,7 +49,7 @@ public class InterviewDTO {
             this.interviewDescription = interviewDescription;
             return this;
         }
-        public Builder setInterviewDate(Date interviewDate) {
+        public Builder setInterviewDate(String interviewDate) {
             this.interviewDate = interviewDate;
             return this;
         }

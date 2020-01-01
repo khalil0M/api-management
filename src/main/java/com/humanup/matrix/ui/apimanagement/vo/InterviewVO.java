@@ -6,12 +6,12 @@ public class InterviewVO {
 
     private String interviewTitle;
     private String interviewDescription;
-    private Date interviewDate;
+    private String interviewDate;
 
     public InterviewVO() {
     }
 
-    public InterviewVO(String interviewTitle, String interviewDescription, Date interviewDate) {
+    public InterviewVO(String interviewTitle, String interviewDescription, String interviewDate) {
         this.interviewTitle = interviewTitle;
         this.interviewDescription = interviewDescription;
         this.interviewDate = interviewDate;
@@ -23,7 +23,7 @@ public class InterviewVO {
     public String getInterviewDescription() {
         return interviewDescription;
     }
-    public Date getInterviewDate() {
+    public String getInterviewDate() {
         return interviewDate;
     }
 
@@ -31,7 +31,7 @@ public class InterviewVO {
     public static class Builder {
         private String interviewTitle;
         private String interviewDescription;
-        private Date interviewDate;
+        private String interviewDate;
 
         public Builder() {
         }
@@ -44,7 +44,7 @@ public class InterviewVO {
             this.interviewDescription = interviewDescription;
             return this;
         }
-        public Builder setInterviewDate(Date interviewDate) {
+        public Builder setInterviewDate(String interviewDate) {
             this.interviewDate = interviewDate;
             return this;
         }

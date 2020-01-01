@@ -42,7 +42,7 @@ public class PersonQuery implements GraphQLQueryResolver {
                         e.printStackTrace();
                     }
                     return new PersonVO.Builder()
-                    .setBirthDate(p.getFirstName())
+                    .setBirthDate(p.getBirthDate())
                     .setFirstName(p.getFirstName())
                     .setLastName(p.getLastName())
                     .setMailAdresses(p.getMailAdresses())
@@ -66,7 +66,7 @@ public class PersonQuery implements GraphQLQueryResolver {
             e.printStackTrace();
         }
         return new PersonVO.Builder()
-                            .setBirthDate(personDTO.getFirstName())
+                            .setBirthDate(personDTO.getBirthDate())
                             .setFirstName(personDTO.getFirstName())
                             .setLastName(personDTO.getLastName())
                             .setMailAdresses(personDTO.getMailAdresses())
