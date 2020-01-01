@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface ProfileProxy {
 
-    @Cacheable
+    @Cacheable(value = "profile-by-title", key = "#title")
     @RequestMapping(value="/profile", method= RequestMethod.GET)
     ProfileDTO findProfileByTitle(@RequestParam(value = "title", defaultValue = "Spring Developer") String title);
 }
