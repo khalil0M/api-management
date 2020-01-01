@@ -1,6 +1,9 @@
 package com.humanup.matrix.ui.apimanagement.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humanup.matrix.ui.apimanagement.dto.ProfileDTO;
 import com.humanup.matrix.ui.apimanagement.proxy.PersonProxy;
 import com.humanup.matrix.ui.apimanagement.dto.PersonDTO;
@@ -25,8 +28,9 @@ public class PersonQuery implements GraphQLQueryResolver {
     ProfileProxy profileProxy;
 
 
-    public List<PersonVO> getListPerson(){
-        List<PersonDTO> personListDTO=  personProxy.findAllPerson();
+    public List<PersonVO> getListPerson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<PersonDTO> personListDTO=  mapper.readValue(personProxy.findAllPerson(),new TypeReference<List<PersonDTO>>(){});
         return personListDTO.stream()
                 .map(p -> {
                     ProfileDTO profile = profileProxy.findProfileByTitle(p.getProfile());
@@ -43,8 +47,9 @@ public class PersonQuery implements GraphQLQueryResolver {
 
 
 
-    public PersonVO getPersonByEmail(String email){
-        PersonDTO personDTO=  personProxy.findPersonByEmail(email);
+    public PersonVO getPersonByEmail(String email) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        PersonDTO personDTO=  mapper.readValue(personProxy.findPersonByEmail(email),PersonDTO.class);
         ProfileDTO profile = profileProxy.findProfileByTitle(personDTO.getProfile());
         return new PersonVO.Builder()
                             .setBirthDate(personDTO.getFirstName())

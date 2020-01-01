@@ -2,6 +2,7 @@ package com.humanup.matrix.ui.apimanagement.dto;
 
 public class SkillDTO {
 
+	private Long  idTypeSkills;
 	private String libelle;
 	private String description;
 	private String typeSkills;
@@ -9,12 +10,16 @@ public class SkillDTO {
 	protected SkillDTO() {
 	}
 
-	public SkillDTO(String libelle, String description, String typeSkills) {
+	public SkillDTO(Long idTypeSkills,String libelle, String description, String typeSkills) {
+		this.idTypeSkills= idTypeSkills;
 		this.libelle = libelle;
 		this.description = description;
 		this.typeSkills = typeSkills;
 	}
 
+	public Long getIdTypeSkills() {
+		return idTypeSkills;
+	}
 
 	public String getLibelle() {
 		return libelle;
@@ -29,12 +34,17 @@ public class SkillDTO {
 	}
 
 	public static class Builder {
-
+		private Long  idTypeSkills;
 		private String libelle;
 		private String description;
 		private String typeSkills;
 
 		public Builder() {
+		}
+
+		public Builder setIdTypeSkills(Long idTypeSkills) {
+			this.idTypeSkills = idTypeSkills;
+			return this;
 		}
 
 		public Builder setDescription(String description) {
@@ -53,7 +63,7 @@ public class SkillDTO {
 		}
 
 		public SkillDTO build() {
-			return new SkillDTO(libelle, description,typeSkills);
+			return new SkillDTO(idTypeSkills,libelle, description,typeSkills);
 		}
 
 	}
