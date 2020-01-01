@@ -6,6 +6,12 @@ type Person {
   birthDate: String,
   profile: Profile,
   skillVOList: [Skill]
+  interviews: [Interview]
+}
+type Interview {
+  interviewTitle: String,
+  interviewDescription: String,
+  interviewDate: String
 }
 type Skill {
   libelle: String,
