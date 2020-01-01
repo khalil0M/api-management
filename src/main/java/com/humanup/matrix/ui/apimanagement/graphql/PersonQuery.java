@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class PersonQuery implements GraphQLQueryResolver {
+    final static ObjectMapper mapper = new ObjectMapper();
     @Autowired
     PersonProxy personProxy;
 
@@ -33,7 +34,12 @@ public class PersonQuery implements GraphQLQueryResolver {
         List<PersonDTO> personListDTO=  mapper.readValue(personProxy.findAllPerson(),new TypeReference<List<PersonDTO>>(){});
         return personListDTO.stream()
                 .map(p -> {
-                    ProfileDTO profile = profileProxy.findProfileByTitle(p.getProfile());
+                    ProfileDTO profile = null;
+                    try {
+                        profile = mapper.readValue(profileProxy.findProfileByTitle(p.getProfile()), ProfileDTO.class);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
                     return new PersonVO.Builder()
                     .setBirthDate(p.getFirstName())
                     .setFirstName(p.getFirstName())
@@ -48,9 +54,9 @@ public class PersonQuery implements GraphQLQueryResolver {
 
 
     public PersonVO getPersonByEmail(String email) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+
         PersonDTO personDTO=  mapper.readValue(personProxy.findPersonByEmail(email),PersonDTO.class);
-        ProfileDTO profile = profileProxy.findProfileByTitle(personDTO.getProfile());
+        ProfileDTO profile = mapper.readValue(profileProxy.findProfileByTitle(personDTO.getProfile()),ProfileDTO.class);
         return new PersonVO.Builder()
                             .setBirthDate(personDTO.getFirstName())
                             .setFirstName(personDTO.getFirstName())
