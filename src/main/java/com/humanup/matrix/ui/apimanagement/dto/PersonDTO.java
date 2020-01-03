@@ -10,6 +10,7 @@ public class PersonDTO {
     private String profile;
     private List<SkillDTO> skillVOList;
 
+
     public PersonDTO() {
     }
 
@@ -20,6 +21,7 @@ public class PersonDTO {
         this.birthDate = birthDate;
         this.profile = profile;
         this.skillVOList = skillVOList;
+
     }
 
     public String getFirstName() {
@@ -42,10 +44,11 @@ public class PersonDTO {
         return profile;
     }
 
-
     public List<SkillDTO> getSkillVOList() {
         return skillVOList;
     }
+
+
 
     public static class Builder {
         private String firstName;
@@ -54,6 +57,7 @@ public class PersonDTO {
         private String birthDate;
         private String profile;
         private List<SkillDTO> skillVOList;
+
 
         public Builder() {
         }
@@ -87,6 +91,8 @@ public class PersonDTO {
             this.skillVOList = skillVOList;
             return this;
         }
+
+
 
         public PersonDTO build() {
             return new PersonDTO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList);

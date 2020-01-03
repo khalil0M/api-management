@@ -22,6 +22,6 @@ public interface CollaboratorManagementProxy {
     String findInteviewsByCollaboratuerEmail(@RequestParam(value = "email", defaultValue = "robot@sqli.com") String email);
 
     @Cacheable(cacheNames = "collaborator-by-email", key = "#email")
-    @RequestMapping(value="/collaborator", method= RequestMethod.GET)
-    String findCollaboratorByEmail(@RequestParam(value = "email", defaultValue = "robot@sqli.com") String email);
+    @RequestMapping(value="/collaborator/projects", method= RequestMethod.GET)
+    String findProjectsCollaboratorByEmail(@RequestParam(value = "email", defaultValue = "robot@sqli.com") String email);
 }
