@@ -51,7 +51,7 @@ public  class ObjectBuilder {
     public static List<ProjectVO> buildCollectionProjectByEmailPerson(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {
         List<ProjectDTO> projectListDTO = null;
         try {
-            projectListDTO = mapper.readValue(collaboratorManagementProxy.findInteviewsByCollaboratuerEmail(email), new TypeReference<List<ProjectDTO>>() {
+            projectListDTO = mapper.readValue(collaboratorManagementProxy.findProjectsCollaboratorByEmail(email), new TypeReference<List<ProjectDTO>>() {
             });
         } catch (JsonProcessingException e) {
             LOGGER.error("Exception Parsing   List<ProjectVO>  {}", email, e);
