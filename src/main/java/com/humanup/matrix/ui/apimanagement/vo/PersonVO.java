@@ -13,12 +13,12 @@ public class PersonVO {
     private ProfileVO profile;
     private List<SkillVO> skillVOList;
     private List<InterviewVO> interviews;
-    private List<ProjectVO> projectVOList;
+    private List<ProjectVO> projects;
 
     public PersonVO() {
     }
 
-    public PersonVO(String firstName, String lastName, String mailAdresses, String birthDate, ProfileVO profile, List<SkillVO> skillVOList,List<InterviewVO> interviews,List<ProjectVO> projectVOList) {
+    public PersonVO(String firstName, String lastName, String mailAdresses, String birthDate, ProfileVO profile, List<SkillVO> skillVOList,List<InterviewVO> interviews,List<ProjectVO> projects) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mailAdresses = mailAdresses;
@@ -26,7 +26,7 @@ public class PersonVO {
         this.profile = profile;
         this.skillVOList = skillVOList;
         this.interviews = interviews;
-        this.projectVOList = projectVOList;
+        this.projects = projects;
     }
 
     public String getFirstName() {
@@ -57,8 +57,8 @@ public class PersonVO {
         return interviews;
     }
 
-    public List<ProjectVO> getProjectVOList() {
-        return projectVOList;
+    public List<ProjectVO> getProjectsList() {
+        return projects;
     }
 
     public static class Builder {
@@ -69,7 +69,7 @@ public class PersonVO {
         private ProfileVO profile;
         private List<SkillVO> skillVOList;
         private List<InterviewVO> interviews;
-        private List<ProjectVO> projectVOList;
+        private List<ProjectVO> projects;
 
         public Builder() {
         }
@@ -109,13 +109,13 @@ public class PersonVO {
             return this;
         }
 
-        public Builder setProjects(List<ProjectVO> projectVOList) {
-            this.projectVOList = projectVOList;
+        public Builder setProjects(List<ProjectVO> projects) {
+            this.projects = projects;
             return this;
         }
 
         public PersonVO build() {
-            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList,interviews,projectVOList);
+            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList,interviews,projects);
         }
     }
 }
