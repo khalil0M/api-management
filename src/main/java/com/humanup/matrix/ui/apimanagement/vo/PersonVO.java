@@ -13,11 +13,12 @@ public class PersonVO {
     private ProfileVO profile;
     private List<SkillVO> skillVOList;
     private List<InterviewVO> interviews;
+    private List<ProjectVO> projectVOList;
 
     public PersonVO() {
     }
 
-    public PersonVO(String firstName, String lastName, String mailAdresses, String birthDate, ProfileVO profile, List<SkillVO> skillVOList,List<InterviewVO> interviews) {
+    public PersonVO(String firstName, String lastName, String mailAdresses, String birthDate, ProfileVO profile, List<SkillVO> skillVOList,List<InterviewVO> interviews,List<ProjectVO> projectVOList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mailAdresses = mailAdresses;
@@ -25,6 +26,7 @@ public class PersonVO {
         this.profile = profile;
         this.skillVOList = skillVOList;
         this.interviews = interviews;
+        this.projectVOList = projectVOList;
     }
 
     public String getFirstName() {
@@ -47,13 +49,16 @@ public class PersonVO {
         return profile;
     }
 
-
     public List<SkillVO> getSkillVOList() {
         return skillVOList;
     }
 
     public List<InterviewVO> getInterviews() {
         return interviews;
+    }
+
+    public List<ProjectVO> getProjectVOList() {
+        return projectVOList;
     }
 
     public static class Builder {
@@ -64,6 +69,7 @@ public class PersonVO {
         private ProfileVO profile;
         private List<SkillVO> skillVOList;
         private List<InterviewVO> interviews;
+        private List<ProjectVO> projectVOList;
 
         public Builder() {
         }
@@ -103,8 +109,13 @@ public class PersonVO {
             return this;
         }
 
+        public Builder setProjects(List<ProjectVO> projectVOList) {
+            this.projectVOList = projectVOList;
+            return this;
+        }
+
         public PersonVO build() {
-            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList,interviews);
+            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList,interviews,projectVOList);
         }
     }
 }

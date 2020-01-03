@@ -7,12 +7,17 @@ type Person {
   profile: Profile,
   skillVOList: [Skill]
   interviews: [Interview]
+  projects: [Project]
 }
 type Interview {
   interviewTitle: String,
   interviewDescription: String,
   interviewDate: String
 }
+type Project {
+   projectTitle: String,
+   projectDescription: String
+ }
 type Skill {
   libelle: String,
   description: String,

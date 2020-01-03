@@ -4,13 +4,11 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.humanup.matrix.ui.apimanagement.dto.InterviewDTO;
-import com.humanup.matrix.ui.apimanagement.dto.ProfileDTO;
+import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.graphql.builder.ObjectBuilder;
 import com.humanup.matrix.ui.apimanagement.graphql.interfaces.IPersonQuery;
 import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
 import com.humanup.matrix.ui.apimanagement.proxy.PersonProxy;
-import com.humanup.matrix.ui.apimanagement.dto.PersonDTO;
 import com.humanup.matrix.ui.apimanagement.proxy.ProfileProxy;
 import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +40,7 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
         try {
             personListDTO = ObjectBuilder.mapper.readValue(personProxy.findAllPerson(), new TypeReference<List<PersonDTO>>() {
             });
+
         } catch (JsonProcessingException e) {
             LOGGER.error("Exception Parsing List<PersonVO> ", e);
         }
@@ -58,9 +57,10 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
                             .setFirstName(p.getFirstName())
                             .setLastName(p.getLastName())
                             .setMailAdresses(p.getMailAdresses())
-                            .setProfile( ObjectBuilder.buildProfile(profile))
-                            .setSkills( ObjectBuilder.buildCollectionSkills(p))
-                            .setInterviews( ObjectBuilder.buildCollectionInterview(p.getMailAdresses(),collaboratorManagementProxy))
+                            .setProfile(ObjectBuilder.buildProfile(profile))
+                            .setSkills(ObjectBuilder.buildCollectionSkills(p))
+                            .setInterviews(ObjectBuilder.buildCollectionInterviewByEmailPerson(p.getMailAdresses(),collaboratorManagementProxy))
+                            .setProjects(ObjectBuilder.buildCollectionProjectByEmailPerson(p.getMailAdresses(),collaboratorManagementProxy))
                             .build();
                 }).collect(Collectors.toList());
     }
@@ -69,10 +69,13 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
     @Override
     public PersonVO getPersonByEmail(@NotNull final String email) {
         PersonDTO personDTO = null;
-        ProfileDTO profile = null;
+        ProfileDTO profileDTO = null;
+        List<ProjectDTO> projectsDTO = null;
         try {
             personDTO =  ObjectBuilder.mapper.readValue(personProxy.findPersonByEmail(email), PersonDTO.class);
-            profile =  ObjectBuilder.mapper.readValue(profileProxy.findProfileByTitle(personDTO.getProfile()), ProfileDTO.class);
+            profileDTO =  ObjectBuilder.mapper.readValue(profileProxy.findProfileByTitle(personDTO.getProfile()), ProfileDTO.class);
+            projectsDTO = ObjectBuilder.mapper.readValue(collaboratorManagementProxy.findProjectsCollaboratorByEmail(email), new TypeReference<List<ProjectDTO>>() {
+            });
         } catch (JsonProcessingException e) {
             LOGGER.error("Exception Parsing  Person {}", email, e);
         }
@@ -81,10 +84,9 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
                 .setFirstName(personDTO.getFirstName())
                 .setLastName(personDTO.getLastName())
                 .setMailAdresses(personDTO.getMailAdresses())
-                .setProfile( ObjectBuilder.buildProfile(profile))
-                .setSkills( ObjectBuilder.buildCollectionSkills(personDTO))
+                .setProfile(ObjectBuilder.buildProfile(profileDTO))
+                .setSkills(ObjectBuilder.buildCollectionSkills(personDTO))
+                .setProjects(ObjectBuilder.buildCollectionProjects(projectsDTO))
                 .build();
     }
-
-
 }

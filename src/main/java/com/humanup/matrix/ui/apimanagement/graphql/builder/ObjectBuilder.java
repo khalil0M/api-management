@@ -3,14 +3,9 @@ package com.humanup.matrix.ui.apimanagement.graphql.builder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.humanup.matrix.ui.apimanagement.dto.InterviewDTO;
-import com.humanup.matrix.ui.apimanagement.dto.PersonDTO;
-import com.humanup.matrix.ui.apimanagement.dto.ProfileDTO;
+import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
-import com.humanup.matrix.ui.apimanagement.vo.InterviewVO;
-import com.humanup.matrix.ui.apimanagement.vo.ProfileVO;
-import com.humanup.matrix.ui.apimanagement.vo.SkillVO;
-import com.humanup.matrix.ui.apimanagement.vo.TypeSkillsVO;
+import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +27,7 @@ public  class ObjectBuilder {
     }
 
     @NotNull
-    public static List<InterviewVO> buildCollectionInterview(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {
+    public static List<InterviewVO> buildCollectionInterviewByEmailPerson(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {
         List<InterviewDTO> interviewListDTO = null;
         try {
             interviewListDTO = mapper.readValue(collaboratorManagementProxy.findInteviewsByCollaboratuerEmail(email), new TypeReference<List<InterviewDTO>>() {
@@ -47,6 +42,38 @@ public  class ObjectBuilder {
                             .setInterviewTitle(interview.getInterviewTitle())
                             .setInterviewDescription(interview.getInterviewDescription())
                             .setInterviewDate(interview.getInterviewDate())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @NotNull
+    public static List<ProjectVO> buildCollectionProjectByEmailPerson(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {
+        List<ProjectDTO> projectListDTO = null;
+        try {
+            projectListDTO = mapper.readValue(collaboratorManagementProxy.findInteviewsByCollaboratuerEmail(email), new TypeReference<List<ProjectDTO>>() {
+            });
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Exception Parsing   List<ProjectVO>  {}", email, e);
+        }
+
+        return projectListDTO.stream()
+                .map(project -> {
+                    return new ProjectVO.Builder()
+                            .setProjectTitle(project.getProjectTitle())
+                            .setProjectDescription(project.getProjectDescription())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @NotNull
+    public static List<ProjectVO> buildCollectionProjects(@NotNull final List<ProjectDTO> p) {
+        return p.stream()
+                .map(project -> {
+                    return new ProjectVO.Builder()
+                            .setProjectTitle(project.getProjectTitle())
+                            .setProjectDescription(project.getProjectDescription())
                             .build();
                 })
                 .collect(Collectors.toList());

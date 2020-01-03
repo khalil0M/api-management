@@ -15,13 +15,13 @@ public interface CollaboratorManagementProxy {
 
     @Cacheable(cacheNames ="collaborator-all")
     @GetMapping(value="/collaborator/all")
-    String findCollaboratuers();
+    String findCollaborators();
 
     @Cacheable(cacheNames ="collaborator-all-by-email", key = "#email")
     @GetMapping(value="/collaborator/all/interview")
     String findInteviewsByCollaboratuerEmail(@RequestParam(value = "email", defaultValue = "robot@sqli.com") String email);
 
     @Cacheable(cacheNames = "collaborator-by-email", key = "#email")
-    @RequestMapping(value="/collaborator", method= RequestMethod.GET)
-    String findCollaboratorByEmail(@RequestParam(value = "email", defaultValue = "robot@sqli.com") String email);
+    @RequestMapping(value="/collaborator/projects", method= RequestMethod.GET)
+    String findProjectsCollaboratorByEmail(@RequestParam(value = "email", defaultValue = "robot@sqli.com") String email);
 }
