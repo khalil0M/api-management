@@ -15,7 +15,7 @@ public interface CollaboratorManagementProxy {
 
     @Cacheable(cacheNames ="collaborator-all")
     @GetMapping(value="/collaborator/all")
-    String findCollaboratuers();
+    String findCollaborators();
 
     @Cacheable(cacheNames ="collaborator-all-by-email", key = "#email")
     @GetMapping(value="/collaborator/all/interview")

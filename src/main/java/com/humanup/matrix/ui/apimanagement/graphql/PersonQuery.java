@@ -4,14 +4,11 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.humanup.matrix.ui.apimanagement.dto.InterviewDTO;
-import com.humanup.matrix.ui.apimanagement.dto.ProfileDTO;
-import com.humanup.matrix.ui.apimanagement.dto.ProjectDTO;
+import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.graphql.builder.ObjectBuilder;
 import com.humanup.matrix.ui.apimanagement.graphql.interfaces.IPersonQuery;
 import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
 import com.humanup.matrix.ui.apimanagement.proxy.PersonProxy;
-import com.humanup.matrix.ui.apimanagement.dto.PersonDTO;
 import com.humanup.matrix.ui.apimanagement.proxy.ProfileProxy;
 import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
@@ -50,14 +47,6 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
         return personListDTO.stream()
                 .map(p -> {
                     ProfileDTO profile = null;
-                    List<ProjectDTO> projectsDTO = null;
-                    try {
-                        projectsDTO = ObjectBuilder.mapper.readValue(collaboratorManagementProxy.findCollaboratuers(), new TypeReference<List<ProjectDTO>>() {
-                        });
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                        LOGGER.error("Exception Parsing Projects {}", e);
-                    }
                     try {
                         profile =  ObjectBuilder.mapper.readValue(profileProxy.findProfileByTitle(p.getProfile()), ProfileDTO.class);
                     } catch (JsonProcessingException e) {
@@ -70,8 +59,8 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
                             .setMailAdresses(p.getMailAdresses())
                             .setProfile(ObjectBuilder.buildProfile(profile))
                             .setSkills(ObjectBuilder.buildCollectionSkills(p))
-                            .setInterviews(ObjectBuilder.buildCollectionInterview(p.getMailAdresses(),collaboratorManagementProxy))
-                            .setProjects(ObjectBuilder.buildCollectionProjects(projectsDTO))
+                            .setInterviews(ObjectBuilder.buildCollectionInterviewByEmailPerson(p.getMailAdresses(),collaboratorManagementProxy))
+                            .setProjects(ObjectBuilder.buildCollectionProjectByEmailPerson(p.getMailAdresses(),collaboratorManagementProxy))
                             .build();
                 }).collect(Collectors.toList());
     }
