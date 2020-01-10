@@ -5,17 +5,59 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
+import com.humanup.matrix.ui.apimanagement.proxy.CourseProxy;
+import com.humanup.matrix.ui.apimanagement.proxy.TrainingProxy;
 import com.humanup.matrix.ui.apimanagement.vo.*;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public  class ObjectBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObjectBuilder.class);
     public final static ObjectMapper mapper = new ObjectMapper();
+
+    @NotNull
+    public static TrainerVO buildTrainer(@NotNull final String email, TrainingProxy trainingProxy) {
+        TrainerDTO trainerDTO = null;
+        String phone ="0000000000";
+        try {
+            trainerDTO = mapper.readValue(trainingProxy.findTrainerByEmail(email),TrainerDTO.class);
+            phone = trainerDTO.getPhone();
+        } catch (Exception e) {
+            LOGGER.error("Exception Parsing   trainerDTO  {}", email, e);
+        }
+        return TrainerVO.builder().phoneNumber(phone)
+                .build();
+    }
+
+    @NotNull
+    public static List<CourseVO> buildCollectionCourseByEmailPerson(@NotNull final String email, CourseProxy courseProxy) {
+        List<CourseDTO> coursesDTO = null;
+        try {
+            coursesDTO = mapper.readValue(courseProxy.findCoursesByEmail(email), new TypeReference<List<CourseDTO>>() {
+            });
+        } catch (Exception e) {
+            LOGGER.error("Exception Parsing   List<CourseVO>  {}", email, e);
+            return Collections.emptyList();
+        }
+        return coursesDTO.stream()
+                .map(course -> {
+                    return CourseVO.builder()
+                            .courseTypeTitle(course.getCourseTypeTitle())
+                            .description(course.getDescription())
+                            .title(course.getTitle())
+                            .startDate(course.getStartDate().toString())
+                            .endDate(course.getEndDate().toString())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 
     @NotNull
     public static ProfileVO buildProfile(@NotNull final ProfileDTO profile) {

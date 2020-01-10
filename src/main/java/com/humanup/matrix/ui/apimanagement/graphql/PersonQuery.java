@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.graphql.builder.ObjectBuilder;
 import com.humanup.matrix.ui.apimanagement.graphql.interfaces.IPersonQuery;
-import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
-import com.humanup.matrix.ui.apimanagement.proxy.PersonProxy;
-import com.humanup.matrix.ui.apimanagement.proxy.ProfileProxy;
+import com.humanup.matrix.ui.apimanagement.proxy.*;
 import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -34,6 +32,12 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
     @Autowired
     CollaboratorManagementProxy collaboratorManagementProxy;
 
+    @Autowired
+    TrainingProxy trainingProxy;
+
+    @Autowired
+    CourseProxy courseProxy;
+
     @Override
     public List<PersonVO> getListPerson(){
         List<PersonDTO> personListDTO = null;
@@ -52,15 +56,18 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
                     } catch (JsonProcessingException e) {
                         LOGGER.error("Exception Parsing Profile {}", p.getProfile(), e);
                     }
-                    return new PersonVO.Builder()
-                            .setBirthDate(p.getBirthDate())
-                            .setFirstName(p.getFirstName())
-                            .setLastName(p.getLastName())
-                            .setMailAdresses(p.getMailAdresses())
-                            .setProfile(ObjectBuilder.buildProfile(profile))
-                            .setSkills(ObjectBuilder.buildCollectionSkills(p))
-                            .setInterviews(ObjectBuilder.buildCollectionInterviewByEmailPerson(p.getMailAdresses(),collaboratorManagementProxy))
-                            .setProjects(ObjectBuilder.buildCollectionProjectByEmailPerson(p.getMailAdresses(),collaboratorManagementProxy))
+                    String mailAdresses = p.getMailAdresses();
+                    return  PersonVO.builder()
+                            .birthDate(p.getBirthDate())
+                            .firstName(p.getFirstName())
+                            .lastName(p.getLastName())
+                            .mailAdresses(mailAdresses)
+                            .profile(ObjectBuilder.buildProfile(profile))
+                            .skillVOList(ObjectBuilder.buildCollectionSkills(p))
+                            .trainer(ObjectBuilder.buildTrainer(mailAdresses,trainingProxy))
+                            .interviews(ObjectBuilder.buildCollectionInterviewByEmailPerson(mailAdresses,collaboratorManagementProxy))
+                            .projects(ObjectBuilder.buildCollectionProjectByEmailPerson(mailAdresses,collaboratorManagementProxy))
+                            .courses(ObjectBuilder.buildCollectionCourseByEmailPerson(mailAdresses,courseProxy))
                             .build();
                 }).collect(Collectors.toList());
     }
@@ -79,14 +86,14 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
         } catch (JsonProcessingException e) {
             LOGGER.error("Exception Parsing  Person {}", email, e);
         }
-        return new PersonVO.Builder()
-                .setBirthDate(personDTO.getBirthDate())
-                .setFirstName(personDTO.getFirstName())
-                .setLastName(personDTO.getLastName())
-                .setMailAdresses(personDTO.getMailAdresses())
-                .setProfile(ObjectBuilder.buildProfile(profileDTO))
-                .setSkills(ObjectBuilder.buildCollectionSkills(personDTO))
-                .setProjects(ObjectBuilder.buildCollectionProjects(projectsDTO))
+        return  PersonVO.builder()
+                .birthDate(personDTO.getBirthDate())
+                .firstName(personDTO.getFirstName())
+                .lastName(personDTO.getLastName())
+                .mailAdresses(personDTO.getMailAdresses())
+                .profile(ObjectBuilder.buildProfile(profileDTO))
+                .skillVOList(ObjectBuilder.buildCollectionSkills(personDTO))
+                .projects(ObjectBuilder.buildCollectionProjects(projectsDTO))
                 .build();
     }
 }
