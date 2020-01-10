@@ -76,6 +76,7 @@ public  class ObjectBuilder {
             });
         } catch (JsonProcessingException e) {
             LOGGER.error("Exception Parsing   List<InterviewVO>  {}", email, e);
+            return Collections.emptyList();
         }
 
         return interviewListDTO.stream()
@@ -97,6 +98,7 @@ public  class ObjectBuilder {
             });
         } catch (JsonProcessingException e) {
             LOGGER.error("Exception Parsing   List<ProjectVO>  {}", email, e);
+            return Collections.emptyList();
         }
 
         return projectListDTO.stream()
