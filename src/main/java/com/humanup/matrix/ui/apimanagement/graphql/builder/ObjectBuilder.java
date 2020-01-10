@@ -23,7 +23,7 @@ public  class ObjectBuilder {
     public final static ObjectMapper mapper = new ObjectMapper();
 
     @NotNull
-    public static TrainerVO buildTrainer(@NotNull final String email, TrainingProxy trainingProxy) {
+    public static TrainerVO buildTrainer(@NotNull final String email, @NotNull final TrainingProxy trainingProxy) {
         TrainerDTO trainerDTO = null;
         String phone ="0000000000";
         try {
@@ -37,7 +37,7 @@ public  class ObjectBuilder {
     }
 
     @NotNull
-    public static List<CourseVO> buildCollectionCourseByEmailPerson(@NotNull final String email, CourseProxy courseProxy) {
+    public static List<CourseVO> buildCollectionCourseByEmailPerson(@NotNull final String email, @NotNull final CourseProxy courseProxy) {
         List<CourseDTO> coursesDTO = null;
         try {
             coursesDTO = mapper.readValue(courseProxy.findCoursesByEmail(email), new TypeReference<List<CourseDTO>>() {
@@ -69,7 +69,7 @@ public  class ObjectBuilder {
     }
 
     @NotNull
-    public static List<InterviewVO> buildCollectionInterviewByEmailPerson(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {
+    public static List<InterviewVO> buildCollectionInterviewByEmailPerson(@NotNull final String email, @NotNull final CollaboratorManagementProxy collaboratorManagementProxy) {
         List<InterviewDTO> interviewListDTO = null;
         try {
             interviewListDTO = mapper.readValue(collaboratorManagementProxy.findInteviewsByCollaboratuerEmail(email), new TypeReference<List<InterviewDTO>>() {
@@ -91,7 +91,7 @@ public  class ObjectBuilder {
     }
 
     @NotNull
-    public static List<ProjectVO> buildCollectionProjectByEmailPerson(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {
+    public static List<ProjectVO> buildCollectionProjectByEmailPerson(@NotNull final String email, @NotNull final CollaboratorManagementProxy collaboratorManagementProxy) {
         List<ProjectDTO> projectListDTO = null;
         try {
             projectListDTO = mapper.readValue(collaboratorManagementProxy.findProjectsCollaboratorByEmail(email), new TypeReference<List<ProjectDTO>>() {
