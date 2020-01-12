@@ -31,11 +31,14 @@ type Profile {
   profileDescription: String,
   countPerson: Int
 }
+type Question {
+  questionText: String
+}
 type Query {
 listPerson:[Person],
-personByEmail(email: String): Person
+personByEmail(email: String): Person,
+listQuestion:[Question]
 }
-
 type Mutation {
 createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person
 }

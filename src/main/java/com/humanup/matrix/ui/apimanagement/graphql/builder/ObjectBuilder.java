@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
+import com.humanup.matrix.ui.apimanagement.proxy.PersonProxy;
 import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

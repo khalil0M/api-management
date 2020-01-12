@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.graphql.builder.ObjectBuilder;
 import com.humanup.matrix.ui.apimanagement.graphql.interfaces.IPersonQuery;
-import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
-import com.humanup.matrix.ui.apimanagement.proxy.PersonProxy;
-import com.humanup.matrix.ui.apimanagement.proxy.ProfileProxy;
+import com.humanup.matrix.ui.apimanagement.proxy.*;
 import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -30,6 +28,12 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
 
     @Autowired
     ProfileProxy profileProxy;
+
+    @Autowired
+    QuestionProxy questionProxy;
+
+    @Autowired
+    ChoiceProxy choiceProxy;
 
     @Autowired
     CollaboratorManagementProxy collaboratorManagementProxy;
@@ -88,5 +92,44 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
                 .setSkills(ObjectBuilder.buildCollectionSkills(personDTO))
                 .setProjects(ObjectBuilder.buildCollectionProjects(projectsDTO))
                 .build();
+    }
+
+
+    @Override
+    public List<QuestionVO> getListQuestion() {
+        List<QuestionDTO> questionListDTO = null;
+
+        try {
+            questionListDTO = ObjectBuilder.mapper.readValue(questionProxy.findAllQuestion(), new TypeReference<List<QuestionDTO>>() {
+            });
+
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Exception Parsing List<QuestionVO> ", e);
+        }
+
+        return questionListDTO.stream().map(q -> {
+            return  QuestionVO.builder()
+                    .questionId(q.getQuestionId())
+                    .questionText(q.getQuestionText())
+                    .build();
+        })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ChoiceVO> getListChoice() {
+        List<ChoiceDTO> choiceListDTO = null;
+        try {
+            choiceListDTO = ObjectBuilder.mapper.readValue(choiceProxy.findAllChoice(),new TypeReference<List<ChoiceDTO>>() {});
+        }catch (JsonProcessingException e) {
+            LOGGER.error("Exception Parsing List<ChoiceVO> ", e);
+        }
+        return choiceListDTO.stream().map(c -> {
+            return ChoiceVO.builder()
+                    .choiceText(c.getChoiceText())
+                    .percentage(c.getPercentage())
+                    .questionId(c.getQuestionId())
+                    .build();
+        }).collect(Collectors.toList());
     }
 }
