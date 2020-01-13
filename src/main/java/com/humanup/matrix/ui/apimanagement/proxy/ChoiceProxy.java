@@ -5,9 +5,7 @@ import com.humanup.matrix.ui.apimanagement.dto.QuestionDTO;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "qcm-app-v1")
 public interface ChoiceProxy {
@@ -20,4 +18,7 @@ public interface ChoiceProxy {
     @GetMapping(value="/choice/all")
     String findAllChoice();
 
+    @Cacheable(cacheNames = "choice-by-id", key = "#choiceId")
+    @RequestMapping(value="/choice/all/question", method= RequestMethod.GET)
+    String findChoicesByQuestionId(@RequestParam(value="questionId", defaultValue="2") Long questionId);
 }

@@ -18,4 +18,8 @@ public interface QuestionProxy {
     @GetMapping(value="/question/all")
     String findAllQuestion();
 
+    @Cacheable(cacheNames = "question-by-id", key = "#questionId")
+    @RequestMapping(value="/question", method= RequestMethod.GET)
+    String findQuestionByQuestionId(@RequestParam(value="questionId", defaultValue="1") Long questionId);
+
 }

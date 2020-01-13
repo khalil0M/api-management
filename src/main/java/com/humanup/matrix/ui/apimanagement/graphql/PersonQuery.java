@@ -125,10 +125,40 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
             LOGGER.error("Exception Parsing List<ChoiceVO> ", e);
         }
         return choiceListDTO.stream().map(c -> {
+            QuestionDTO questionDTO = null;
+            try{
+                questionDTO = ObjectBuilder.mapper.readValue(questionProxy.findQuestionByQuestionId(c.getQuestionId()), QuestionDTO.class);
+            }catch (JsonProcessingException e){
+                LOGGER.error("Exception Parsing Question {}", c.getQuestionId(), e);
+            }
             return ChoiceVO.builder()
                     .choiceText(c.getChoiceText())
                     .percentage(c.getPercentage())
-                    .questionId(c.getQuestionId())
+                    .question(ObjectBuilder.buildQuestion(questionDTO))
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ChoiceVO> getChoicesByQuestionId(@NotNull final Long questionId) {
+
+        List<ChoiceDTO> choiceListDTO = null;
+        try {
+            choiceListDTO = ObjectBuilder.mapper.readValue(choiceProxy.findChoicesByQuestionId(questionId),new TypeReference<List<ChoiceDTO>>() {});
+        }catch (JsonProcessingException e) {
+            LOGGER.error("Exception Parsing List<ChoiceVO> ", e);
+        }
+        return choiceListDTO.stream().map(c -> {
+            QuestionDTO questionDTO = null;
+            try{
+                questionDTO = ObjectBuilder.mapper.readValue(questionProxy.findQuestionByQuestionId(c.getQuestionId()), QuestionDTO.class);
+            }catch (JsonProcessingException e){
+                LOGGER.error("Exception Parsing Question {}", c.getQuestionId(), e);
+            }
+            return ChoiceVO.builder()
+                    .choiceText(c.getChoiceText())
+                    .percentage(c.getPercentage())
+                    .question(ObjectBuilder.buildQuestion(questionDTO))
                     .build();
         }).collect(Collectors.toList());
     }

@@ -15,4 +15,6 @@ public interface IPersonQuery {
     List<QuestionVO> getListQuestion();
 
     List<ChoiceVO> getListChoice();
+
+    List<ChoiceVO>  getChoicesByQuestionId(@NotNull final Long questionId);
 }

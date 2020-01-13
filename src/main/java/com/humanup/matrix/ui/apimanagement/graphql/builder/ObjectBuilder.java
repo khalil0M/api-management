@@ -28,6 +28,15 @@ public  class ObjectBuilder {
     }
 
     @NotNull
+    public static QuestionVO buildQuestion(@NotNull final QuestionDTO question) {
+        return QuestionVO.builder()
+                .questionId(question.getQuestionId())
+                .questionText(question.getQuestionText())
+                .build();
+    }
+
+
+    @NotNull
     public static List<InterviewVO> buildCollectionInterviewByEmailPerson(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {
         List<InterviewDTO> interviewListDTO = null;
         try {
