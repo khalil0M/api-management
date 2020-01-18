@@ -35,6 +35,24 @@ public  class ObjectBuilder {
                 .build();
     }
 
+    @NotNull
+    public static PersonVO buildPerson(@NotNull final PersonDTO person) {
+        return new PersonVO.Builder()
+                .setMailAdresses(person.getMailAdresses())
+                .setFirstName(person.getFirstName())
+                .setLastName(person.getLastName())
+                .setBirthDate(person.getBirthDate())
+                .build();
+    }
+
+    @NotNull
+    public static ChoiceVO buildChoice(@NotNull final ChoiceDTO choice) {
+        return ChoiceVO.builder()
+                .choiceText(choice.getChoiceText())
+                .percentage(choice.getPercentage())
+                .build();
+    }
+
 
     @NotNull
     public static List<InterviewVO> buildCollectionInterviewByEmailPerson(@NotNull final String email, CollaboratorManagementProxy collaboratorManagementProxy) {

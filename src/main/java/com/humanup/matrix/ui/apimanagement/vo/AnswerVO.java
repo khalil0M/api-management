@@ -10,10 +10,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @Getter
 @Setter
-@ToString(of= {"choiceId","emailPerson"})
 public class AnswerVO {
 
-     Long choiceId;
-     String emailPerson;
+     ChoiceVO choice;
+     PersonVO person;
 
 }

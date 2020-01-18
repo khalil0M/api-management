@@ -43,8 +43,7 @@ type Query {
   listPerson:[Person],
   personByEmail(email: String): Person,
   listQuestion:[Question],
-  listChoice:[Choice],
-  ChoicesByQuestionId(questionId:Long): Choice
+  listChoice:[Choice]
 }
 type Mutation {
   createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person
