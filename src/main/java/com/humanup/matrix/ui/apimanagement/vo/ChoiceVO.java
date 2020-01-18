@@ -9,10 +9,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @Getter
 @Setter
-@ToString(of= {"choiceText","percentage","questionId"})
+@ToString(of= {"choiceText","percentage"})
 public class ChoiceVO {
      String choiceText;
      int percentage;
-     QuestionVO questionId;
+     QuestionVO question;
 }
 

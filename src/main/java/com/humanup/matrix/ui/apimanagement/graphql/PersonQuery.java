@@ -36,6 +36,9 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
     ChoiceProxy choiceProxy;
 
     @Autowired
+    AnswerProxy answerProxy;
+
+    @Autowired
     CollaboratorManagementProxy collaboratorManagementProxy;
 
     @Override
@@ -125,11 +128,90 @@ public class PersonQuery implements GraphQLQueryResolver, IPersonQuery {
             LOGGER.error("Exception Parsing List<ChoiceVO> ", e);
         }
         return choiceListDTO.stream().map(c -> {
+            QuestionDTO questionDTO = null;
+            try{
+                questionDTO = ObjectBuilder.mapper.readValue(questionProxy.findQuestionByQuestionId(c.getQuestionId()), QuestionDTO.class);
+            }catch (JsonProcessingException e){
+                LOGGER.error("Exception Parsing Question {}", c.getQuestionId(), e);
+            }
             return ChoiceVO.builder()
                     .choiceText(c.getChoiceText())
                     .percentage(c.getPercentage())
-                    .questionId(c.getQuestionId())
+                    .question(ObjectBuilder.buildQuestion(questionDTO))
                     .build();
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ChoiceVO> getChoicesByQuestionId(@NotNull final Long questionId) {
+
+        List<ChoiceDTO> choiceListDTO = null;
+        try {
+            choiceListDTO = ObjectBuilder.mapper.readValue(choiceProxy.findChoicesByQuestionId(questionId),new TypeReference<List<ChoiceDTO>>() {});
+        }catch (JsonProcessingException e) {
+            LOGGER.error("Exception Parsing List<ChoiceVO> ", e);
+        }
+        return choiceListDTO.stream().map(c -> {
+            QuestionDTO questionDTO = null;
+            try{
+                questionDTO = ObjectBuilder.mapper.readValue(questionProxy.findQuestionByQuestionId(c.getQuestionId()), QuestionDTO.class);
+            }catch (JsonProcessingException e){
+                LOGGER.error("Exception Parsing Question {}", c.getQuestionId(), e);
+            }
+            return ChoiceVO.builder()
+                    .choiceText(c.getChoiceText())
+                    .percentage(c.getPercentage())
+                    .question(ObjectBuilder.buildQuestion(questionDTO))
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AnswerVO> getListAnswer() {
+        List<AnswerDTO> answerListDTO = null;
+        try {
+            answerListDTO = ObjectBuilder.mapper.readValue(answerProxy.findAllAnswer(),new TypeReference<List<AnswerDTO>>() {});
+        }catch (JsonProcessingException e) {
+            LOGGER.error("Exception Parsing List<AnswerDTO> ", e);
+        }
+        return answerListDTO.stream().map(c -> {
+            ChoiceDTO choiceDTO = null;
+            PersonDTO personDTO = null;
+            try{
+                choiceDTO = ObjectBuilder.mapper.readValue(choiceProxy.findChoicesByQuestionId(c.), AnswerDTO.class);
+                personDTO = ObjectBuilder.mapper.readValue(personProxy.findPersonByEmail(c.getEmailPerson()), PersonDTO.class);
+            }catch (JsonProcessingException e){
+                LOGGER.error("Exception Parsing Answer {}", e);
+            }
+            return AnswerVO.builder()
+                    .choice(ObjectBuilder.buildChoice(choiceDTO))
+                    .person(ObjectBuilder.buildPerson(personDTO))
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AnswerVO> getAnswerByChoiceId(@NotNull Long choiceId) {
+        ChoiceDTO choiceDTO = null;
+        PersonDTO personDTO = null;
+        try {
+            choiceDTO = ObjectBuilder.mapper.readValue(choiceProxy.findChoicesByQuestionId(choiceDTO.getQuestionId()), ChoiceDTO.class);
+            personDTO = ObjectBuilder.mapper.readValue(personProxy.findPersonByEmail(personDTO.getMailAdresses()),PersonDTO.class);
+        }catch (JsonProcessingException e) {
+            LOGGER.error("Exception Parsing List<AnswerVO> ", e);
+        }
+        return answerListDTO.stream().map(c -> {
+            ChoiceDTO choiceDTO = null;
+            try{
+                choiceDTO = ObjectBuilder.mapper.readValue(answerProxy.findAnswerByChoiceId(c.getChoiceId()), ChoiceDTO.class);
+            }catch (JsonProcessingException e){
+                LOGGER.error("Exception Parsing Question {}", c.getChoiceId(), e);
+            }
+            return AnswerVO.builder()
+                    .choice(ObjectBuilder.buildChoice(choiceDTO))
+                    .question(ObjectBuilder.buildQuestion(choiceDTO))
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
 }
