@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public  class ObjectBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObjectBuilder.class);
     public final static ObjectMapper mapper = new ObjectMapper();
-
     @NotNull
     public static TrainerVO buildTrainer(@NotNull final String email, @NotNull final TrainingProxy trainingProxy) {
         TrainerDTO trainerDTO = null;
