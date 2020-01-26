@@ -46,11 +46,25 @@ type Profile {
   profileDescription: String,
   countPerson: Int
 }
-type Query {
-listPerson:[Person],
-personByEmail(email: String): Person
+type Question {
+  questionText: String
 }
-
+type Choice {
+  choiceText :  String,
+  percentage : Int,
+  question : Question
+}
+type Answer {
+  choice :  Choice,
+  person : Person
+}
+type Query {
+  listPerson:[Person],
+  personByEmail(email: String): Person,
+  listQuestion:[Question],
+  listChoice:[Choice],
+  listAnswer:[Answer]
+}
 type Mutation {
-createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person
+  createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person
 }
