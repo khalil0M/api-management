@@ -20,7 +20,6 @@ public interface PersonProxy {
     @GetMapping(value="/person/all")
     String findAllPerson();
 
-
     @Cacheable(cacheNames = "person-by-email", key = "#email")
     @RequestMapping(value="/person", method= RequestMethod.GET)
     String findPersonByEmail(@RequestParam(value="email", defaultValue="robot@sqli.com") String email);

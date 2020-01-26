@@ -21,6 +21,30 @@ import java.util.stream.Collectors;
 public  class ObjectBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObjectBuilder.class);
     public final static ObjectMapper mapper = new ObjectMapper();
+    @NotNull
+    public static PersonVO buildPerson(@NotNull final PersonDTO person) {
+        return new PersonVO.Builder()
+                .setMailAdresses(person.getMailAdresses())
+                .setFirstName(person.getFirstName())
+                .setLastName(person.getLastName())
+                .setBirthDate(person.getBirthDate())
+                .build();
+    }
+
+    @NotNull
+    public static ChoiceVO buildChoice(@NotNull final ChoiceDTO choice) {
+        return ChoiceVO.builder()
+                .choiceText(choice.getChoiceText())
+                .percentage(choice.getPercentage())
+                .build();
+    }
+    @NotNull
+    public static QuestionVO buildQuestion(@NotNull final QuestionDTO question) {
+        return QuestionVO.builder()
+                .questionId(question.getQuestionId())
+                .questionText(question.getQuestionText())
+                .build();
+    }
 
     @NotNull
     public static TrainerVO buildTrainer(@NotNull final String email, @NotNull final TrainingProxy trainingProxy) {
