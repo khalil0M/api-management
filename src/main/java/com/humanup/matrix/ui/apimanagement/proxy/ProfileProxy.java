@@ -13,11 +13,9 @@ import java.util.List;
 
 
 @FeignClient(name = "collaborator-app-v1")
-@CacheConfig(cacheNames = {"api-management"})
-
 public interface ProfileProxy {
 
-    @Cacheable
+    @Cacheable(cacheNames = "profile-by-title", key = "#title")
     @RequestMapping(value="/profile", method= RequestMethod.GET)
-    ProfileDTO findProfileByTitle(@RequestParam(value = "title", defaultValue = "Spring Developer") String title);
+    String findProfileByTitle(@RequestParam(value = "title", defaultValue = "Spring Developer") String title);
 }

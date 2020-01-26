@@ -1,0 +1,70 @@
+
+type Person {
+  firstName: String,
+  lastName: String,
+  mailAdresses: String,
+  birthDate: String,
+  profile: Profile,
+  skillVOList: [Skill],
+  interviews: [Interview],
+  projects: [Project],
+  trainer: Trainer,
+  courses: [Course]
+}
+
+type Course {
+   courseTypeTitle: String,
+   title: String,
+   description: String,
+   startDate: String,
+   endDate: String
+}
+
+type Trainer {
+  phoneNumber: String
+}
+
+type Interview {
+  interviewTitle: String,
+  interviewDescription: String,
+  interviewDate: String
+}
+type Project {
+   projectTitle: String,
+   projectDescription: String
+ }
+type Skill {
+  libelle: String,
+  description: String,
+  typeSkills: TypeSkills
+}
+type TypeSkills {
+  titleSkill: String
+}
+type Profile {
+  profileTitle: String,
+  profileDescription: String,
+  countPerson: Int
+}
+type Question {
+  questionText: String
+}
+type Choice {
+  choiceText :  String,
+  percentage : Int,
+  question : Question
+}
+type Answer {
+  choice :  Choice,
+  person : Person
+}
+type Query {
+  listPerson:[Person],
+  personByEmail(email: String): Person,
+  listQuestion:[Question],
+  listChoice:[Choice],
+  listAnswer:[Answer]
+}
+type Mutation {
+  createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person
+}
