@@ -8,20 +8,40 @@ type Person {
   skillVOList: [Skill],
   interviews: [Interview],
   projects: [Project],
-  trainer: Trainer,
-  courses: [Course]
+  courses: [Course],
+  reviews: [Review]
 }
 
 type Course {
    courseTypeTitle: String,
+   trainerEmail: String,
    title: String,
    description: String,
    startDate: String,
-   endDate: String
+   endDate: String,
+   reviews: [Review]
+}
+
+type CourseType {
+   typeTitle: String
 }
 
 type Trainer {
-  phoneNumber: String
+  name: String,
+  address: String,
+  phone: String,
+  email: String
+}
+
+type Intern {
+  emailPerson: String
+}
+
+type Review {
+  courseTitle: String,
+  internEmail: String,
+  createdOn: String,
+  score: String
 }
 
 type Interview {
@@ -63,7 +83,11 @@ type Query {
   personByEmail(email: String): Person,
   listQuestion:[Question],
   listChoice:[Choice],
-  listAnswer:[Answer]
+  listAnswer:[Answer],
+  listCourses: [Course],
+  listTrainers: [Trainer],
+  listReviews: [Review],
+  listCourseTypes: [CourseType]
 }
 type Mutation {
   createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person

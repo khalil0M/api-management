@@ -1,7 +1,10 @@
 package com.humanup.matrix.ui.apimanagement.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -9,10 +12,8 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
-@ToString(of = {"name", "address", "phone", "email"})
-public class TrainerDTO {
-  String name;
-  String address;
-  String phone;
-  String email;
+@ToString(of = {"emailPerson", "reviewList"})
+public class InternDTO {
+  String emailPerson;
+  @JsonIgnore List<ReviewDTO> reviewList;
 }

@@ -7,20 +7,28 @@ import lombok.experimental.FieldDefaults;
 import java.util.Date;
 import java.util.List;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
+@ToString(
+    of = {
+      "courseTypeTitle",
+      "trainerEmail",
+      "title",
+      "description",
+      "startDate",
+      "endDate",
+      "reviewList"
+    })
 public class CourseDTO {
-    long id;
-    String courseTypeTitle;
-    String trainerEmail;
-    String title;
-    String description;
-    Date startDate;
-    Date endDate;
-    @JsonIgnore
-    List<ReviewDTO> reviewList;
+  String courseTypeTitle;
+  String trainerEmail;
+  String title;
+  String description;
+  Date startDate;
+  Date endDate;
+  List<ReviewDTO> reviewList;
 }
