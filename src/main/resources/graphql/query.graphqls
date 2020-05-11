@@ -90,5 +90,9 @@ type Query {
   listCourseTypes: [CourseType]
 }
 type Mutation {
-  createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String):Person
+  createPerson(firstName: String, lastName: String, mailAdresses: String, birthDate: String, profile: String): Person,
+  createCourseType(typeTitle: String): CourseType,
+  createTrainer(name: String, address: String, phone: String, email: String): Trainer,
+  createCourse(idType: String, idTrainer: String, title: String, description: String, startDate: String, endDate: String): Course,
+  createReview(internId: String, courseId: String, createdOn: String, score: Int) : Review
 }

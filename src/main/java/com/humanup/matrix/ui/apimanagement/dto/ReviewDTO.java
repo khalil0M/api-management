@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -18,6 +18,6 @@ public class ReviewDTO {
   @JsonIgnore long internId;
   String courseTitle;
   String internEmail;
-  Date createdOn;
+  LocalDateTime createdOn;
   int score;
 }

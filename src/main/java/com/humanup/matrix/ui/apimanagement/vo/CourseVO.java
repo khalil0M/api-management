@@ -3,7 +3,6 @@ package com.humanup.matrix.ui.apimanagement.vo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -17,7 +16,7 @@ public class CourseVO {
   String trainerEmail;
   String title;
   String description;
-  Date startDate;
-  Date endDate;
+  String startDate;
+  String endDate;
   List<ReviewVO> reviews;
 }

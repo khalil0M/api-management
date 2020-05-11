@@ -3,6 +3,9 @@ package com.humanup.matrix.ui.apimanagement.graphql.builder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.humanup.matrix.ui.apimanagement.dto.*;
 import com.humanup.matrix.ui.apimanagement.proxy.CollaboratorManagementProxy;
 import com.humanup.matrix.ui.apimanagement.proxy.CourseProxy;
@@ -12,13 +15,30 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ObjectBuilder {
   private static final Logger LOGGER = LoggerFactory.getLogger(ObjectBuilder.class);
+  private static final DateTimeFormatter inputFormatter =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+  private static final DateTimeFormatter outputFormatter =
+      DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
   public static final ObjectMapper mapper = new ObjectMapper();
+
+  static {
+    final LocalDateTimeDeserializer dateTimeDeserializer =
+        new LocalDateTimeDeserializer(inputFormatter);
+    final LocalDateTimeSerializer dateTimeSerializer = new LocalDateTimeSerializer(inputFormatter);
+    final JavaTimeModule javaTimeModule = new JavaTimeModule();
+    javaTimeModule.addDeserializer(LocalDateTime.class, dateTimeDeserializer);
+    javaTimeModule.addSerializer(LocalDateTime.class, dateTimeSerializer);
+    mapper.registerModule(javaTimeModule);
+  }
 
   @NotNull
   public static PersonVO buildPerson(@NotNull final PersonDTO person) {
@@ -65,8 +85,14 @@ public class ObjectBuilder {
                   .courseTypeTitle(course.getCourseTypeTitle())
                   .description(course.getDescription())
                   .title(course.getTitle())
-                  .startDate(course.getStartDate())
-                  .endDate(course.getEndDate())
+                  .startDate(
+                      Optional.ofNullable(course.getStartDate())
+                          .map(date -> date.format(outputFormatter))
+                          .orElse(null))
+                  .endDate(
+                      Optional.ofNullable(course.getEndDate())
+                          .map(date -> date.format(outputFormatter))
+                          .orElse(null))
                   .build();
             })
         .collect(Collectors.toList());
@@ -90,7 +116,10 @@ public class ObjectBuilder {
               return ReviewVO.builder()
                   .courseTitle(review.getCourseTitle())
                   .internEmail(review.getInternEmail())
-                  .createdOn(review.getCreatedOn())
+                  .createdOn(
+                      Optional.ofNullable(review.getCreatedOn())
+                          .map(date -> date.format(outputFormatter))
+                          .orElse(null))
                   .score(review.getScore())
                   .build();
             })
