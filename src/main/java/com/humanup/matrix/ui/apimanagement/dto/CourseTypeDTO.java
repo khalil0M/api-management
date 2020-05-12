@@ -9,10 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
-@ToString(of = {"name", "address", "phone", "email"})
-public class TrainerDTO {
-  String name;
-  String address;
-  String phone;
-  String email;
+@ToString(of = {"typeTitle"})
+public class CourseTypeDTO {
+  String typeTitle;
 }

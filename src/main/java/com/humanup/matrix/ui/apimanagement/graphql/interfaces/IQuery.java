@@ -1,25 +1,30 @@
 package com.humanup.matrix.ui.apimanagement.graphql.interfaces;
 
-import com.humanup.matrix.ui.apimanagement.vo.AnswerVO;
-import com.humanup.matrix.ui.apimanagement.vo.ChoiceVO;
-import com.humanup.matrix.ui.apimanagement.vo.PersonVO;
-import com.humanup.matrix.ui.apimanagement.vo.QuestionVO;
+import com.humanup.matrix.ui.apimanagement.vo.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface IQuery {
-    PersonVO getPersonByEmail(@NotNull final String email);
+  PersonVO getPersonByEmail(@NotNull final String email);
 
-    List<PersonVO> getListPerson();
+  List<PersonVO> getListPerson();
 
-    List<QuestionVO> getListQuestion();
+  List<QuestionVO> getListQuestion();
 
-    List<ChoiceVO> getListChoice();
+  List<ChoiceVO> getListChoice();
 
-    List<ChoiceVO>  getChoicesByQuestionId(@NotNull final Long questionId);
+  List<ChoiceVO> getChoicesByQuestionId(@NotNull final Long questionId);
 
-    List<AnswerVO> getListAnswer();
+  List<AnswerVO> getListAnswer();
 
-    AnswerVO getAnswerByChoiceId(@NotNull final Long choiceId);
+  AnswerVO getAnswerByChoiceId(@NotNull final Long choiceId);
+
+  List<CourseVO> getListCourses();
+
+  List<TrainerVO> getListTrainers();
+
+  List<ReviewVO> getListReviews();
+
+  List<CourseTypeVO> getListCourseTypes();
 }
