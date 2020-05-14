@@ -3,17 +3,12 @@ package com.humanup.matrix.ui.apimanagement.vo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 @Getter
 @Setter
-public class TrainerVO implements Serializable {
-  String name;
-  String address;
-  String phone;
-  String email;
+@Builder
+public class CourseTypeVO {
+  String typeTitle;
 }

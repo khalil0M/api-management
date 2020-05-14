@@ -11,9 +11,6 @@ import java.io.Serializable;
 @Builder
 @Getter
 @Setter
-public class TrainerVO implements Serializable {
-  String name;
-  String address;
-  String phone;
-  String email;
+public class InternVO implements Serializable {
+  String emailPerson;
 }
