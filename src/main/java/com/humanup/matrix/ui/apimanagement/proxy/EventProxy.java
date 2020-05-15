@@ -7,7 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "event-app-v1")
+@FeignClient(name = "event-matrix")
 public interface EventProxy {
 
     @CachePut(cacheNames = "event_by_id", key = "#event.id")
