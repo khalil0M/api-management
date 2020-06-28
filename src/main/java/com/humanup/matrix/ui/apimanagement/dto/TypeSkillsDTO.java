@@ -1,35 +1,17 @@
 package com.humanup.matrix.ui.apimanagement.dto;
 
-public class TypeSkillsDTO {
-    private String titleSkill;
-    
-    public TypeSkillsDTO() {
-    }
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-    public TypeSkillsDTO(String titleSkill) {
-        this.titleSkill = titleSkill;
-      
-    }
+import java.io.Serializable;
 
-    public String getTitleSkill() {
-        return this.titleSkill;
-    }
-  
-  
-    public static class Builder{
-        private String titleSkill;
-        public Builder() {
-        }
-
-        public Builder setTitleSkill(String titleSkill) {
-            this.titleSkill = titleSkill;
-            return this;
-        }
-
-        public TypeSkillsDTO build() {
-            return new TypeSkillsDTO(titleSkill);
-        }
-       
-    }
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+public class TypeSkillsDTO implements Serializable {
+     String titleSkill;
 
 }
